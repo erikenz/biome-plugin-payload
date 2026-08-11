@@ -61,7 +61,7 @@ const DEPTH_MESSAGE = "Payload queries should set `depth` explicitly. Omitting i
 const OVERRIDE_ACCESS_MESSAGE = "Always declare `overrideAccess` explicitly";
 const POPULATE_MESSAGE =
   "Payload queries with `depth` greater than 0 should specify `populate`";
-const USER_MESSAGE = "When `overrideAccess: false` is set, pass `user`";
+const USER_MESSAGE = "When `overrideAccess: false` is set, pass `user` or `req`";
 
 describe("no-find-without-select", () => {
   it("flags payload.find without select", () => {
@@ -334,5 +334,13 @@ describe("require-user-with-override-false", () => {
 
   it("skips calls with spread arguments", () => {
     expect(messagesFor("user/06-spread-args.ts")).toHaveLength(0);
+  });
+
+  it("accepts req as equivalent to user", () => {
+    expect(messagesFor("user/07-req-as-user.ts")).toHaveLength(0);
+  });
+
+  it("accepts req passed as a shorthand property", () => {
+    expect(messagesFor("user/08-shorthand-req.ts")).toHaveLength(0);
   });
 });
