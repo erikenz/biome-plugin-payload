@@ -1,6 +1,6 @@
 {
   "name": "biome-plugin-payload",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Biome lint plugin (GritQL) that enforces Payload CMS best practices on Local API calls",
   "license": "MIT",
   "type": "module",
