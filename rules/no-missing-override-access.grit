@@ -12,32 +12,32 @@ language js
 // - `payload.forgotPassword`, `payload.resetPassword`, `payload.verifyEmail`
 //   (no `overrideAccess` option in the Payload API for these operations)
 `$recv.$op($args)` as $call where {
-  $recv <: or {
-    `payload`,
-    `$x.payload`
-  },
-  $op <: or {
-    `find`,
-    `findByID`,
-    `findVersions`,
-    `findVersionByID`,
-    `create`,
-    `update`,
-    `updateByID`,
-    `delete`,
-    `deleteByID`,
-    `count`,
-    `findDistinct`,
-    `findGlobal`,
-    `updateGlobal`,
-    `login`,
-    `unlock`
-  },
-  $args <: JsObjectExpression(),
-  ! $args <: contains or {
-    `overrideAccess: $_`,
-    `overrideAccess`
-  },
-  ! $args <: contains JsSpread(),
-  register_diagnostic(span=$call, message="Always declare `overrideAccess` explicitly on Payload Local API calls. The Local API bypasses access control by default (`overrideAccess: true`).", severity="error")
+	$recv <: or {
+		`payload`,
+		`$x.payload`
+	},
+	$op <: or {
+		`find`,
+		`findByID`,
+		`findVersions`,
+		`findVersionByID`,
+		`create`,
+		`update`,
+		`updateByID`,
+		`delete`,
+		`deleteByID`,
+		`count`,
+		`findDistinct`,
+		`findGlobal`,
+		`updateGlobal`,
+		`login`,
+		`unlock`
+	},
+	$args <: JsObjectExpression(),
+	! $args <: contains or {
+		`overrideAccess: $_`,
+		`overrideAccess`
+	},
+	! $args <: contains JsSpread(),
+	register_diagnostic(span=$call, message="Always declare `overrideAccess` explicitly on Payload Local API calls. The Local API bypasses access control by default (`overrideAccess: true`).", severity="error")
 }

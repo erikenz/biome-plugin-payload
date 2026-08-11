@@ -1,20 +1,20 @@
 import type { Payload } from "payload";
 
 export async function findVersionsWithSelect(payload: Payload) {
-  const versions = await payload.findVersions({
-    collection: "posts",
-    depth: 0,
-    overrideAccess: true,
-    select: { version: true },
-  });
+	const versions = await payload.findVersions({
+		collection: "posts",
+		depth: 0,
+		overrideAccess: true,
+		select: { version: true },
+	});
 
-  const version = await payload.findVersionByID({
-    collection: "posts",
-    id: "abc",
-    depth: 0,
-    overrideAccess: true,
-    select: { version: true },
-  });
+	const version = await payload.findVersionByID({
+		collection: "posts",
+		id: "abc",
+		depth: 0,
+		overrideAccess: true,
+		select: { version: true },
+	});
 
-  return { versions, version };
+	return { versions, version };
 }

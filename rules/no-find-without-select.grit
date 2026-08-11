@@ -11,22 +11,22 @@ language js
 // - calls with a spread inside the arguments (`{ ...base, collection: 'x' }`)
 // - `payload.db.*` direct-database calls (receiver does not end in `.payload`)
 `$recv.$op($args)` as $call where {
-  $recv <: or {
-    `payload`,
-    `$x.payload`
-  },
-  $op <: or {
-    `find`,
-    `findByID`,
-    `findGlobal`,
-    `findVersions`,
-    `findVersionByID`
-  },
-  $args <: JsObjectExpression(),
-  ! $args <: contains or {
-    `select: $_`,
-    `select`
-  },
-  ! $args <: contains JsSpread(),
-  register_diagnostic(span=$call, message="Payload queries should specify `select` to only fetch the fields that are needed. See docs/guides/payloadcms/queries/select.mdx", severity="error")
+	$recv <: or {
+		`payload`,
+		`$x.payload`
+	},
+	$op <: or {
+		`find`,
+		`findByID`,
+		`findGlobal`,
+		`findVersions`,
+		`findVersionByID`
+	},
+	$args <: JsObjectExpression(),
+	! $args <: contains or {
+		`select: $_`,
+		`select`
+	},
+	! $args <: contains JsSpread(),
+	register_diagnostic(span=$call, message="Payload queries should specify `select` to only fetch the fields that are needed. See docs/guides/payloadcms/queries/select.mdx", severity="error")
 }

@@ -9,6 +9,12 @@
         "payload": "3.87.0",
         "vitest": "4.1.10",
       },
+      "peerDependencies": {
+        "@biomejs/biome": ">=2.0.0",
+      },
+      "optionalPeers": [
+        "@biomejs/biome",
+      ],
     },
   },
   "packages": {

@@ -21,35 +21,35 @@
 // - calls where `overrideAccess` is not the literal `false`
 //   (variable/computed values cannot be verified)
 `$recv.$op($args)` as $call where {
-  $recv <: or {
-    `payload`,
-    `$x.payload`
-  },
-  $op <: or {
-    `find`,
-    `findByID`,
-    `findVersions`,
-    `findVersionByID`,
-    `create`,
-    `update`,
-    `updateByID`,
-    `delete`,
-    `deleteByID`,
-    `count`,
-    `findDistinct`,
-    `findGlobal`,
-    `updateGlobal`,
-    `login`,
-    `unlock`
-  },
-  $args <: JsObjectExpression(),
-  $args <: contains `overrideAccess: false`,
-  ! $args <: contains or {
-    `user: $_`,
-    `user`,
-    `req: $_`,
-    `req`
-  },
-  ! $args <: contains JsSpread(),
-  register_diagnostic(span=$call, message="When `overrideAccess: false` is set, pass `user`, `req`, or `user: null` so Payload knows whose permissions to check. Without them, access control functions receive `undefined` as the user. For explicit unauthenticated access, pass `user: null`.", severity="error")
+	$recv <: or {
+		`payload`,
+		`$x.payload`
+	},
+	$op <: or {
+		`find`,
+		`findByID`,
+		`findVersions`,
+		`findVersionByID`,
+		`create`,
+		`update`,
+		`updateByID`,
+		`delete`,
+		`deleteByID`,
+		`count`,
+		`findDistinct`,
+		`findGlobal`,
+		`updateGlobal`,
+		`login`,
+		`unlock`
+	},
+	$args <: JsObjectExpression(),
+	$args <: contains `overrideAccess: false`,
+	! $args <: contains or {
+		`user: $_`,
+		`user`,
+		`req: $_`,
+		`req`
+	},
+	! $args <: contains JsSpread(),
+	register_diagnostic(span=$call, message="When `overrideAccess: false` is set, pass `user`, `req`, or `user: null` so Payload knows whose permissions to check. Without them, access control functions receive `undefined` as the user. For explicit unauthenticated access, pass `user: null`.", severity="error")
 }

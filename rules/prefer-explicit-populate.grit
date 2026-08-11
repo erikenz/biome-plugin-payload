@@ -23,25 +23,25 @@ language js
 // - calls where `depth` is not a numeric literal (variable, computed, shorthand)
 // - `payload.db.*` direct-database calls (receiver does not end in `.payload`)
 `$recv.$op($args)` as $call where {
-  $recv <: or {
-    `payload`,
-    `$x.payload`
-  },
-  $op <: or {
-    `find`,
-    `findByID`,
-    `findGlobal`,
-    `findVersions`,
-    `findVersionByID`
-  },
-  $args <: JsObjectExpression(),
-  $args <: contains `depth: $d`,
-  $d <: JsNumberLiteralExpression(),
-  ! $d <: "0",
-  ! $args <: contains or {
-    `populate: $_`,
-    `populate`
-  },
-  ! $args <: contains JsSpread(),
-  register_diagnostic(span=$call, message="Payload queries with `depth` greater than 0 should specify `populate` to control which fields of populated related documents are returned. If the collection defines `defaultPopulate`, suppress with a biome-ignore comment. See docs/guides/payloadcms/queries/select.mdx", severity="error")
+	$recv <: or {
+		`payload`,
+		`$x.payload`
+	},
+	$op <: or {
+		`find`,
+		`findByID`,
+		`findGlobal`,
+		`findVersions`,
+		`findVersionByID`
+	},
+	$args <: JsObjectExpression(),
+	$args <: contains `depth: $d`,
+	$d <: JsNumberLiteralExpression(),
+	! $d <: "0",
+	! $args <: contains or {
+		`populate: $_`,
+		`populate`
+	},
+	! $args <: contains JsSpread(),
+	register_diagnostic(span=$call, message="Payload queries with `depth` greater than 0 should specify `populate` to control which fields of populated related documents are returned. If the collection defines `defaultPopulate`, suppress with a biome-ignore comment. See docs/guides/payloadcms/queries/select.mdx", severity="error")
 }

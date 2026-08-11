@@ -1,17 +1,17 @@
 import type { Payload, PayloadRequest } from "payload";
 
 export async function spreadArgs(payload: Payload, req: PayloadRequest) {
-  const base = { overrideAccess: true, select: {} };
+	const base = { overrideAccess: true, select: {} };
 
-  const docs = await payload.find({
-    ...base,
-    collection: "posts",
-  });
+	const docs = await payload.find({
+		...base,
+		collection: "posts",
+	});
 
-  const total = await req.payload.count({
-    collection: "posts",
-    overrideAccess: true,
-  });
+	const total = await req.payload.count({
+		collection: "posts",
+		overrideAccess: true,
+	});
 
-  return { docs, total };
+	return { docs, total };
 }

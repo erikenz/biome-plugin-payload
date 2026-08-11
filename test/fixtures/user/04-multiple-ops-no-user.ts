@@ -1,22 +1,19 @@
-import type { Payload, PayloadRequest } from "payload";
+import type { Payload } from "payload";
 
 // Multiple operations with overrideAccess: false and no user — each should be flagged
-export async function multipleOpsNoUser(
-  payload: Payload,
-  req: PayloadRequest
-) {
-  const post = await payload.create({
-    collection: "posts",
-    data: { title: "New post" },
-    overrideAccess: false,
-  });
+export async function multipleOpsNoUser(payload: Payload) {
+	const post = await payload.create({
+		collection: "posts",
+		data: {},
+		overrideAccess: false,
+	});
 
-  const updated = await payload.update({
-    collection: "posts",
-    id: "abc",
-    data: { title: "Updated" },
-    overrideAccess: false,
-  });
+	const docs = await payload.find({
+		collection: "posts",
+		depth: 0,
+		overrideAccess: false,
+		select: {},
+	});
 
-  return { post, updated };
+	return { post, docs };
 }

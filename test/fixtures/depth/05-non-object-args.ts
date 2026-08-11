@@ -1,18 +1,18 @@
 import type { Payload, PayloadRequest } from "payload";
 
 export async function variableArgs(payload: Payload, req: PayloadRequest) {
-  const options: Parameters<typeof payload.find>[0] = {
-    collection: "posts",
-    overrideAccess: true,
-    select: {},
-  };
+	const options: Parameters<typeof payload.find>[0] = {
+		collection: "posts",
+		overrideAccess: true,
+		select: {},
+	};
 
-  const docs = await payload.find(options);
+	const docs = await payload.find(options);
 
-  const total = await req.payload.count({
-    collection: "posts",
-    overrideAccess: true,
-  });
+	const total = await req.payload.count({
+		collection: "posts",
+		overrideAccess: true,
+	});
 
-  return { docs, total };
+	return { docs, total };
 }

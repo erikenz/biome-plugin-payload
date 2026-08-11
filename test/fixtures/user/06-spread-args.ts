@@ -1,16 +1,15 @@
-import type { Payload, PayloadRequest } from "payload";
+import type { Payload } from "payload";
 
-// spread args — should be skipped (keys cannot be verified statically)
+// Calls with spread arguments — skipped by rule
 export async function findOverrideFalseSpread(
-  payload: Payload,
-  req: PayloadRequest,
-  base: Record<string, unknown>
+	payload: Payload,
+	base: Record<string, unknown>,
 ) {
-  const docs = await payload.find({
-    collection: "posts",
-    overrideAccess: false,
-    ...base,
-  });
+	const docs = await payload.find({
+		...base,
+		collection: "posts",
+		overrideAccess: false,
+	});
 
-  return docs;
+	return docs;
 }

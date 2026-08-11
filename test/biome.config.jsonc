@@ -1,15 +1,15 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.7/schema.json",
-  "plugins": [
-    "../rules/no-find-without-select.grit",
-    "../rules/no-find-without-depth.grit",
-    "../rules/no-missing-override-access.grit",
-    "../rules/prefer-explicit-populate.grit",
-    "../rules/require-user-with-override-false.grit",
-  ],
-  "linter": {
-    "rules": {
-      "preset": "none",
-    },
-  },
+	"$schema": "https://biomejs.dev/schemas/2.5.7/schema.json",
+	"plugins": [
+		"../rules/no-find-without-select.grit",
+		"../rules/no-find-without-depth.grit",
+		"../rules/no-missing-override-access.grit",
+		"../rules/prefer-explicit-populate.grit",
+		"../rules/require-user-with-override-false.grit"
+	],
+	"linter": {
+		"rules": {
+			"preset": "none"
+		}
+	}
 }

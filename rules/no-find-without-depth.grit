@@ -13,22 +13,22 @@ language js
 // - calls with a spread inside the arguments (`{ ...base, collection: 'x' }`)
 // - `payload.db.*` direct-database calls (receiver does not end in `.payload`)
 `$recv.$op($args)` as $call where {
-  $recv <: or {
-    `payload`,
-    `$x.payload`
-  },
-  $op <: or {
-    `find`,
-    `findByID`,
-    `findGlobal`,
-    `findVersions`,
-    `findVersionByID`
-  },
-  $args <: JsObjectExpression(),
-  ! $args <: contains or {
-    `depth: $_`,
-    `depth`
-  },
-  ! $args <: contains JsSpread(),
-  register_diagnostic(span=$call, message="Payload queries should set `depth` explicitly. Omitting it uses the application default (1), which populates one level of relationships. Use `depth: 0` to disable population. See docs/guides/payloadcms/queries/depth.mdx", severity="error")
+	$recv <: or {
+		`payload`,
+		`$x.payload`
+	},
+	$op <: or {
+		`find`,
+		`findByID`,
+		`findGlobal`,
+		`findVersions`,
+		`findVersionByID`
+	},
+	$args <: JsObjectExpression(),
+	! $args <: contains or {
+		`depth: $_`,
+		`depth`
+	},
+	! $args <: contains JsSpread(),
+	register_diagnostic(span=$call, message="Payload queries should set `depth` explicitly. Omitting it uses the application default (1), which populates one level of relationships. Use `depth: 0` to disable population. See docs/guides/payloadcms/queries/depth.mdx", severity="error")
 }
