@@ -1,0 +1,49 @@
+language js
+
+// Require `user` to be passed whenever `overrideAccess: false` is set on a
+// Payload Local API call. Setting `overrideAccess: false` enables access
+// control checks, but those checks run with `undefined` as the user if no
+// `user` is provided, which causes unpredictable behavior in any access
+// function that inspects `req.user`.
+//
+// Correct pattern:
+//   await payload.find({ collection: 'posts', overrideAccess: false, user })
+//
+// See docs/guides/payloadcms/local-api/access-control.mdx
+//
+// Skipped (cannot be verified statically, avoids false positives):
+// - calls where the arguments are not an object literal
+// - calls with a spread inside the arguments
+// - calls where `overrideAccess` is not the literal `false`
+//   (variable/computed values cannot be verified)
+`$recv.$op($args)` as $call where {
+  $recv <: or {
+    `payload`,
+    `$x.payload`
+  },
+  $op <: or {
+    `find`,
+    `findByID`,
+    `findVersions`,
+    `findVersionByID`,
+    `create`,
+    `update`,
+    `updateByID`,
+    `delete`,
+    `deleteByID`,
+    `count`,
+    `findDistinct`,
+    `findGlobal`,
+    `updateGlobal`,
+    `login`,
+    `unlock`
+  },
+  $args <: JsObjectExpression(),
+  $args <: contains `overrideAccess: false`,
+  ! $args <: contains or {
+    `user: $_`,
+    `user`
+  },
+  ! $args <: contains JsSpread(),
+  register_diagnostic(span=$call, message="When `overrideAccess: false` is set, pass `user` so Payload knows whose permissions to check. Without it, access control functions receive `undefined` as the user.", severity="error")
+}

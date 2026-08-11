@@ -1,0 +1,43 @@
+language js
+
+// Require `overrideAccess` to be declared explicitly on every Payload Local
+// API call. The Local API bypasses access control by default (`overrideAccess`
+// defaults to `true`), so the intent must always be visible at the call site.
+// See docs/guides/payloadcms/local-api/access-control.mdx
+//
+// Skipped (cannot be verified statically, avoids false positives):
+// - calls where the arguments are not an object literal
+// - calls with a spread inside the arguments
+// - `payload.db.*` direct-database calls (receiver does not end in `.payload`)
+// - `payload.forgotPassword`, `payload.resetPassword`, `payload.verifyEmail`
+//   (no `overrideAccess` option in the Payload API for these operations)
+`$recv.$op($args)` as $call where {
+  $recv <: or {
+    `payload`,
+    `$x.payload`
+  },
+  $op <: or {
+    `find`,
+    `findByID`,
+    `findVersions`,
+    `findVersionByID`,
+    `create`,
+    `update`,
+    `updateByID`,
+    `delete`,
+    `deleteByID`,
+    `count`,
+    `findDistinct`,
+    `findGlobal`,
+    `updateGlobal`,
+    `login`,
+    `unlock`
+  },
+  $args <: JsObjectExpression(),
+  ! $args <: contains or {
+    `overrideAccess: $_`,
+    `overrideAccess`
+  },
+  ! $args <: contains JsSpread(),
+  register_diagnostic(span=$call, message="Always declare `overrideAccess` explicitly on Payload Local API calls. The Local API bypasses access control by default (`overrideAccess: true`).", severity="error")
+}
