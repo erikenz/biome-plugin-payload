@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3](https://github.com/erikenz/biome-plugin-payload/compare/v0.1.2...v0.1.3) (2026-08-11)
+
+
+### Bug Fixes
+
+* **docs:** update documentation link in rule comments ([8e12ef9](https://github.com/erikenz/biome-plugin-payload/commit/8e12ef9c29fc4a631af03bb76120acf5e2040b6b))
+
 ## [0.1.2](https://github.com/erikenz/biome-plugin-payload/compare/v0.1.1...v0.1.2) (2026-08-11)
 
 
