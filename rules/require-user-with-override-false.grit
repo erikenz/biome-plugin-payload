@@ -1,0 +1,54 @@
+// Require `user` (or `req`, which carries `req.user`) to be passed whenever
+// `overrideAccess: false` is set on a Payload Local API call. Setting
+// `overrideAccess: false` enables access control checks, but those checks run
+// with `undefined` as the user if neither `user` nor `req` is provided, which
+// causes unpredictable behavior in any access function that inspects `req.user`.
+//
+// Both of these patterns are accepted:
+//   await payload.find({ ..., overrideAccess: false, user })        // explicit user
+//   await payload.find({ ..., overrideAccess: false, req })         // Payload reads req.user
+//
+// For intentional anonymous access control (e.g. public-facing Server
+// Components where no req is available), suppress with a biome-ignore comment:
+//   // biome-ignore lint/plugin/require-user-with-override-false: public anonymous access
+//
+// See docs/guides/payloadcms/local-api/access-control.mdx
+//
+// Skipped (cannot be verified statically, avoids false positives):
+// - calls where the arguments are not an object literal
+// - calls with a spread inside the arguments
+// - calls where `overrideAccess` is not the literal `false`
+//   (variable/computed values cannot be verified)
+`$recv.$op($args)` as $call where {
+  $recv <: or {
+    `payload`,
+    `$x.payload`
+  },
+  $op <: or {
+    `find`,
+    `findByID`,
+    `findVersions`,
+    `findVersionByID`,
+    `create`,
+    `update`,
+    `updateByID`,
+    `delete`,
+    `deleteByID`,
+    `count`,
+    `findDistinct`,
+    `findGlobal`,
+    `updateGlobal`,
+    `login`,
+    `unlock`
+  },
+  $args <: JsObjectExpression(),
+  $args <: contains `overrideAccess: false`,
+  ! $args <: contains or {
+    `user: $_`,
+    `user`,
+    `req: $_`,
+    `req`
+  },
+  ! $args <: contains JsSpread(),
+  register_diagnostic(span=$call, message="When `overrideAccess: false` is set, pass `user` or `req` so Payload knows whose permissions to check. Without either, access control functions receive `undefined` as the user. For intentional anonymous access, suppress with a biome-ignore comment.", severity="error")
+}
