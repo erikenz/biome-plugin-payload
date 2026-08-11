@@ -10,7 +10,7 @@ Biome lint plugin (GritQL) that enforces [Payload CMS](https://payloadcms.com) b
 | `no-find-without-depth` | The same read operations that do not set `depth` explicitly — omitting it uses the application default (1), silently populating one level of relationships | `error` |
 | `no-missing-override-access` | Any Local API call that does not declare `overrideAccess` explicitly — the Local API bypasses access control by default (`overrideAccess: true`) | `error` |
 | `prefer-explicit-populate` | Read operations with `depth` > 0 (numeric literal) that do not pass a `populate` object, so populated related documents return more fields than intended | `error` |
-| `require-user-with-override-false` | Any Local API call with `overrideAccess: false` that does not also pass `user` — without a user, access control functions receive `undefined` and behave unpredictably | `error` |
+| `require-user-with-override-false` | Any Local API call with `overrideAccess: false` that does not pass `user`, `req`, or `user: null` — without a user object, access control functions receive `undefined` and behave unpredictably | `error` |
 
 All rules match any receiver that is the identifier `payload` or a member expression ending in `.payload` (e.g. `req.payload`, `this.payload`).
 
@@ -44,6 +44,19 @@ Add each rule to the `plugins` array in your `biome.json` or `biome.jsonc`. Path
 ```
 
 Each file becomes one rule named after the file, in the `plugin` group (e.g. `lint/plugin/no-find-without-select`).
+
+## Intentional Anonymous Access (`overrideAccess: false`)
+
+When making an intentional anonymous query in public Server Components (where no `user` or `req` session exists), pass `user: null` explicitly to communicate unauthenticated access without needing `biome-ignore`:
+
+```ts
+// Explicit unauthenticated query — access control functions run with user = null
+const pages = await payload.find({
+  collection: "pages",
+  overrideAccess: false,
+  user: null,
+});
+```
 
 ## Suppress an intentional violation
 

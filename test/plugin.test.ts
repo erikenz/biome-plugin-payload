@@ -3,8 +3,6 @@ import { createRequire } from "node:module";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-const packageRoot = join(import.meta.dirname, "..");
-
 // Resolve the Biome binary via Node module resolution starting from the
 // package root. This works both as a standalone package (biome in local
 // node_modules) and inside a monorepo (biome hoisted to the workspace root).
@@ -61,7 +59,7 @@ const DEPTH_MESSAGE = "Payload queries should set `depth` explicitly. Omitting i
 const OVERRIDE_ACCESS_MESSAGE = "Always declare `overrideAccess` explicitly";
 const POPULATE_MESSAGE =
   "Payload queries with `depth` greater than 0 should specify `populate`";
-const USER_MESSAGE = "When `overrideAccess: false` is set, pass `user` or `req`";
+const USER_MESSAGE = "When `overrideAccess: false` is set, pass `user`, `req`, or `user: null`";
 
 describe("no-find-without-select", () => {
   it("flags payload.find without select", () => {
@@ -342,5 +340,9 @@ describe("require-user-with-override-false", () => {
 
   it("accepts req passed as a shorthand property", () => {
     expect(messagesFor("user/08-shorthand-req.ts")).toHaveLength(0);
+  });
+
+  it("accepts explicit user: null for intentional unauthenticated queries", () => {
+    expect(messagesFor("user/09-user-null.ts")).toHaveLength(0);
   });
 });
