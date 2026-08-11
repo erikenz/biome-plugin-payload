@@ -6,7 +6,7 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "https://github.com/erikenz/biome-plugin-payload"
+    "url": "git+https://github.com/erikenz/biome-plugin-payload.git"
   },
   "homepage": "https://github.com/erikenz/biome-plugin-payload#readme",
   "keywords": [
