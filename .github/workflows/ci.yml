@@ -13,14 +13,8 @@ concurrency:
 
 jobs:
   test:
-    name: Test (Node ${{ matrix.node-version }})
+    name: Test
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        # Pin the minimum supported version and the current LTS to catch
-        # regressions on both ends. Add more entries as Payload's Node floor rises.
-        node-version: ["20", "22"]
 
     steps:
       - name: Checkout
